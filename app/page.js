@@ -11,7 +11,7 @@ export default function Home() {
     const map = new mapboxgl.Map({
   container: mapRef.current,
 
-  style: "mapbox://styles/mapbox/navigation-night-v1", // 🎨 Farbe
+  style: "mapbox://styles/mapbox/streets-v12", // 🎨 Farbe
 
   center: [13.405, 52.52],
   zoom: 12,
