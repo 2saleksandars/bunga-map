@@ -8,16 +8,20 @@ export default function Home() {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: "map",
-      style: "mapbox://styles/mapbox/dark-v11",
-      center: [13.405, 52.52], // Berlin
+      style: "mapbox://styles/mapbox/streets-v12",
+      center: [13.405, 52.52],
       zoom: 12,
     });
 
+    // 🔥 WICHTIG!
     map.on("load", () => {
-      // 🔥 TEST PIN
+
+      console.log("MAP LOADED"); // DEBUG
+
       new mapboxgl.Marker()
         .setLngLat([13.405, 52.52])
         .addTo(map);
+
     });
 
   }, []);
