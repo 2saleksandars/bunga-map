@@ -10,7 +10,7 @@ export default function Home() {
 
     const map = new mapboxgl.Map({
       container: mapRef.current,
-      style: "mapbox://styles/mapbox/dark-v11",
+      style: "mapbox://styles/mapbox/streets-v12",
       center: [13.405, 52.52],
       zoom: 12,
     });
