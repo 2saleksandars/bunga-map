@@ -22,49 +22,62 @@ export default function Home() {
 
     map.on("load", () => {
 
-      // GIF PIN
+      // =========================
+      // 🎬 3D SPEECH BUBBLE PIN
+      // =========================
+
       const el = document.createElement("div");
-      el.style.width = "40px";
-      el.style.height = "50px";
+      el.style.width = "50px";
+      el.style.height = "60px";
       el.style.position = "relative";
 
+      // Bubble
+      const bubble = document.createElement("div");
+      bubble.style.width = "50px";
+      bubble.style.height = "50px";
+      bubble.style.background = "white";
+      bubble.style.borderRadius = "18px";
+      bubble.style.boxShadow = "0 10px 25px rgba(0,0,0,0.25)";
+      bubble.style.display = "flex";
+      bubble.style.alignItems = "center";
+      bubble.style.justifyContent = "center";
+      bubble.style.position = "absolute";
+      bubble.style.top = "0";
+      bubble.style.border = "1px solid rgba(0,0,0,0.05)";
+
+      // Spitze
       const pointer = document.createElement("div");
       pointer.style.width = "0";
       pointer.style.height = "0";
-      pointer.style.borderLeft = "10px solid transparent";
-      pointer.style.borderRight = "10px solid transparent";
-      pointer.style.borderTop = "15px solid white";
+      pointer.style.borderLeft = "12px solid transparent";
+      pointer.style.borderRight = "12px solid transparent";
+      pointer.style.borderTop = "18px solid white";
       pointer.style.position = "absolute";
       pointer.style.bottom = "0";
       pointer.style.left = "50%";
       pointer.style.transform = "translateX(-50%)";
+      pointer.style.filter = "drop-shadow(0 5px 10px rgba(0,0,0,0.2))";
 
-      const box = document.createElement("div");
-      box.style.width = "40px";
-      box.style.height = "40px";
-      box.style.background = "white";
-      box.style.borderRadius = "12px";
-      box.style.display = "flex";
-      box.style.alignItems = "center";
-      box.style.justifyContent = "center";
-      box.style.boxShadow = "0 6px 16px rgba(0,0,0,0.3)";
-
+      // GIF innen
       const inner = document.createElement("div");
-      inner.style.width = "30px";
-      inner.style.height = "30px";
+      inner.style.width = "34px";
+      inner.style.height = "34px";
+      inner.style.borderRadius = "10px";
       inner.style.backgroundImage = "url('/gif.gif')";
       inner.style.backgroundSize = "cover";
-      inner.style.borderRadius = "8px";
 
-      box.appendChild(inner);
-      el.appendChild(box);
+      bubble.appendChild(inner);
+      el.appendChild(bubble);
       el.appendChild(pointer);
 
       new mapboxgl.Marker(el)
         .setLngLat([13.405, 52.52])
         .addTo(map);
 
-      // AI EVENTS
+      // =========================
+      // 🔥 AI EVENTS PINS
+      // =========================
+
       fetch("/api/events")
         .then(res => res.json())
         .then(events => {
@@ -74,15 +87,22 @@ export default function Home() {
           events.forEach(event => {
 
             const pin = document.createElement("div");
-            pin.style.width = "30px";
-            pin.style.height = "30px";
+            pin.style.width = "28px";
+            pin.style.height = "28px";
             pin.style.borderRadius = "50%";
             pin.style.border = "3px solid white";
 
-            pin.style.background =
-              event.status === "LIVE TODAY" ? "red" : "orange";
-
-            pin.style.boxShadow = "0 0 20px rgba(0,0,0,0.8)";
+            // Farbe nach Status
+            if (event.status === "LIVE TODAY") {
+              pin.style.background = "red";
+              pin.style.boxShadow = "0 0 20px red";
+            } else if (event.status === "LIKELY LIVE") {
+              pin.style.background = "orange";
+              pin.style.boxShadow = "0 0 15px orange";
+            } else {
+              pin.style.background = "gray";
+              pin.style.boxShadow = "0 0 10px gray";
+            }
 
             new mapboxgl.Marker(pin)
               .setLngLat([event.lng, event.lat])
