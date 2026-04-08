@@ -132,9 +132,12 @@ export default function Home() {
   el.appendChild(bubble);
   el.appendChild(pointer);
 
-  new mapboxgl.Marker(el)
-    .setLngLat([event.lng, event.lat])
-    .addTo(map);
+  new mapboxgl.Marker({
+  element: el,
+  anchor: "bottom"
+})
+.setLngLat([event.lng, event.lat])
+.addTo(map);
 
 });
 
