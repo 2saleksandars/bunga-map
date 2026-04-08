@@ -70,9 +70,12 @@ export default function Home() {
       el.appendChild(bubble);
       el.appendChild(pointer);
 
-      new mapboxgl.Marker(el)
-        .setLngLat([13.405, 52.52])
-        .addTo(map);
+      new mapboxgl.Marker({
+  element: el,
+  anchor: "bottom"
+})
+.setLngLat([event.lng, event.lat])
+.addTo(map);
 
       // =========================
       // 🔥 AI EVENTS PINS
