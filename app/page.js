@@ -9,20 +9,19 @@ export default function Home() {
     const map = new mapboxgl.Map({
       container: "map",
       style: "mapbox://styles/mapbox/streets-v12",
-      center: [13.405, 52.52],
+      center: [13.405, 52.52], // Berlin
       zoom: 12,
     });
 
-    // 🔥 WICHTIG!
+    // 🔥 FIX: wartet bis Map wirklich ready ist
     setTimeout(() => {
-
-      console.log("MAP LOADED"); // DEBUG
+      console.log("MAP READY");
 
       new mapboxgl.Marker()
         .setLngLat([13.405, 52.52])
         .addTo(map);
 
-    });
+    }, 1000);
 
   }, []);
 
