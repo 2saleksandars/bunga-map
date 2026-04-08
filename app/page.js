@@ -86,29 +86,54 @@ export default function Home() {
 
           events.forEach(event => {
 
-            const pin = document.createElement("div");
-            pin.style.width = "28px";
-            pin.style.height = "28px";
-            pin.style.borderRadius = "50%";
-            pin.style.border = "3px solid white";
+  const el = document.createElement("div");
+  el.style.width = "50px";
+  el.style.height = "60px";
+  el.style.position = "relative";
 
-            // Farbe nach Status
-            if (event.status === "LIVE TODAY") {
-              pin.style.background = "red";
-              pin.style.boxShadow = "0 0 20px red";
-            } else if (event.status === "LIKELY LIVE") {
-              pin.style.background = "orange";
-              pin.style.boxShadow = "0 0 15px orange";
-            } else {
-              pin.style.background = "gray";
-              pin.style.boxShadow = "0 0 10px gray";
-            }
+  // Bubble
+  const bubble = document.createElement("div");
+  bubble.style.width = "50px";
+  bubble.style.height = "50px";
+  bubble.style.borderRadius = "18px";
+  bubble.style.display = "flex";
+  bubble.style.alignItems = "center";
+  bubble.style.justifyContent = "center";
+  bubble.style.position = "absolute";
+  bubble.style.top = "0";
 
-            new mapboxgl.Marker(pin)
-              .setLngLat([event.lng, event.lat])
-              .addTo(map);
+  // 🔥 Farbe nach Status
+  if (event.status === "LIVE TODAY") {
+    bubble.style.background = "#ff3b30";
+    bubble.style.boxShadow = "0 10px 25px rgba(255,0,0,0.5)";
+  } else if (event.status === "LIKELY LIVE") {
+    bubble.style.background = "#ff9500";
+    bubble.style.boxShadow = "0 10px 25px rgba(255,150,0,0.5)";
+  } else {
+    bubble.style.background = "#cccccc";
+    bubble.style.boxShadow = "0 10px 20px rgba(0,0,0,0.2)";
+  }
 
-          });
+  // Spitze
+  const pointer = document.createElement("div");
+  pointer.style.width = "0";
+  pointer.style.height = "0";
+  pointer.style.borderLeft = "12px solid transparent";
+  pointer.style.borderRight = "12px solid transparent";
+  pointer.style.borderTop = `18px solid ${bubble.style.background}`;
+  pointer.style.position = "absolute";
+  pointer.style.bottom = "0";
+  pointer.style.left = "50%";
+  pointer.style.transform = "translateX(-50%)";
+
+  el.appendChild(bubble);
+  el.appendChild(pointer);
+
+  new mapboxgl.Marker(el)
+    .setLngLat([event.lng, event.lat])
+    .addTo(map);
+
+});
 
         });
 
