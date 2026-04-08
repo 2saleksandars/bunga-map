@@ -13,7 +13,7 @@ export default function Home() {
       zoom: 12,
     });
 
-    setTimeout(() => {
+    map.on("load", () => {
 
       // 🎬 DEIN CUSTOM GIF PIN
       const el = document.createElement("div");
@@ -61,12 +61,21 @@ export default function Home() {
       fetch("/api/events")
         .then(res => res.json())
         .then(events => {
-
+          
+          console.log("EVENTS:", events);
           events.forEach(event => {
 
             const pin = document.createElement("div");
-            pin.style.width = "20px";
-            pin.style.height = "20px";
+            pin.style.width = "30px";
+            pin.style.height = "30px";
+            pin.style.borderRadius = "50%";
+            pin.style.border = "3px solid white";
+            pin.style.zIndex = "999";
+
+            pin.style.background =
+              event.status === "LIVE TODAY" ? "red" : "orange";
+
+            pin.style.boxShadow = "0 0 20px rgba(0,0,0,0.8)";
             pin.style.borderRadius = "50%";
 
             pin.style.background =
@@ -82,7 +91,7 @@ export default function Home() {
 
         });
 
-    }, 1000);
+    });
 
   }, []);
 
