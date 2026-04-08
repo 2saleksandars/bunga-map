@@ -74,7 +74,7 @@ export default function Home() {
   element: el,
   anchor: "bottom"
 })
-.setLngLat([event.lng, event.lat])
+.setLngLat([13.405, 52.52])   // ✅ FIX
 .addTo(map);
 
       // =========================
