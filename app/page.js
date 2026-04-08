@@ -14,7 +14,7 @@ export default function Home() {
     });
 
     // 🔥 WICHTIG!
-    map.on("load", () => {
+    setTimeout(() => {
 
       console.log("MAP LOADED"); // DEBUG
 
