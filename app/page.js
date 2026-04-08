@@ -6,27 +6,26 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 export default function Home() {
   useEffect(() => {
-    const map = new mapboxgl.Map({
-  container: "map",
-  style: "mapbox://styles/mapbox/streets-v12",
-  center: [13.405, 52.52],
-  zoom: 11,
 
-  // 🔒 Begrenzung auf Berlin
-  maxBounds: [
-    [13.0884, 52.3383], // Süd-West Berlin
-    [13.7611, 52.6755]  // Nord-Ost Berlin
-  ]
-});
+    const map = new mapboxgl.Map({
       container: "map",
       style: "mapbox://styles/mapbox/streets-v12",
       center: [13.405, 52.52],
-      zoom: 12,
+      zoom: 11,
+
+      // 🔒 Berlin Begrenzung
+      maxBounds: [
+        [13.0884, 52.3383],
+        [13.7611, 52.6755]
+      ],
+
+      maxZoom: 15,
+      minZoom: 10
     });
 
     map.on("load", () => {
 
-      // 🎬 DEIN CUSTOM GIF PIN
+      // 🎬 GIF PIN
       const el = document.createElement("div");
       el.style.width = "40px";
       el.style.height = "50px";
@@ -68,12 +67,13 @@ export default function Home() {
         .setLngLat([13.405, 52.52])
         .addTo(map);
 
-      // 🔥 AI EVENTS LADEN
+      // 🔥 AI EVENTS
       fetch("/api/events")
         .then(res => res.json())
         .then(events => {
-          
+
           console.log("EVENTS:", events);
+
           events.forEach(event => {
 
             const pin = document.createElement("div");
@@ -81,18 +81,11 @@ export default function Home() {
             pin.style.height = "30px";
             pin.style.borderRadius = "50%";
             pin.style.border = "3px solid white";
-            pin.style.zIndex = "999";
 
             pin.style.background =
               event.status === "LIVE TODAY" ? "red" : "orange";
 
             pin.style.boxShadow = "0 0 20px rgba(0,0,0,0.8)";
-            pin.style.borderRadius = "50%";
-
-            pin.style.background =
-              event.status === "LIVE TODAY" ? "red" : "orange";
-
-            pin.style.boxShadow = "0 0 10px rgba(0,0,0,0.5)";
 
             new mapboxgl.Marker(pin)
               .setLngLat([event.lng, event.lat])
