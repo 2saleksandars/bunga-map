@@ -7,6 +7,17 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 export default function Home() {
   useEffect(() => {
     const map = new mapboxgl.Map({
+  container: "map",
+  style: "mapbox://styles/mapbox/streets-v12",
+  center: [13.405, 52.52],
+  zoom: 11,
+
+  // 🔒 Begrenzung auf Berlin
+  maxBounds: [
+    [13.0884, 52.3383], // Süd-West Berlin
+    [13.7611, 52.6755]  // Nord-Ost Berlin
+  ]
+});
       container: "map",
       style: "mapbox://styles/mapbox/streets-v12",
       center: [13.405, 52.52],
