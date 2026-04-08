@@ -12,20 +12,17 @@ export default function Home() {
       style: "mapbox://styles/mapbox/streets-v12",
       center: [13.405, 52.52],
       zoom: 11,
-
-      // 🔒 Berlin Begrenzung
       maxBounds: [
         [13.0884, 52.3383],
         [13.7611, 52.6755]
       ],
-
       maxZoom: 15,
       minZoom: 10
     });
 
     map.on("load", () => {
 
-      // 🎬 GIF PIN
+      // GIF PIN
       const el = document.createElement("div");
       el.style.width = "40px";
       el.style.height = "50px";
@@ -67,7 +64,7 @@ export default function Home() {
         .setLngLat([13.405, 52.52])
         .addTo(map);
 
-      // 🔥 AI EVENTS
+      // AI EVENTS
       fetch("/api/events")
         .then(res => res.json())
         .then(events => {
