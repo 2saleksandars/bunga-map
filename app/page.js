@@ -17,13 +17,31 @@ export default function Home() {
 
   const el = document.createElement("div");
   el.style.width = "40px";
-  el.style.height = "40px";
-  el.style.borderRadius = "12px";
-  el.style.background = "white";
-  el.style.display = "flex";
-  el.style.alignItems = "center";
-  el.style.justifyContent = "center";
-  el.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)";
+  el.style.height = "50px";
+  el.style.position = "relative";
+
+  // 🔻 Spitze (Pin)
+  const pointer = document.createElement("div");
+  pointer.style.width = "0";
+  pointer.style.height = "0";
+  pointer.style.borderLeft = "10px solid transparent";
+  pointer.style.borderRight = "10px solid transparent";
+  pointer.style.borderTop = "15px solid white";
+  pointer.style.position = "absolute";
+  pointer.style.bottom = "0";
+  pointer.style.left = "50%";
+  pointer.style.transform = "translateX(-50%)";
+
+  // ⬜ Box oben
+  const box = document.createElement("div");
+  box.style.width = "40px";
+  box.style.height = "40px";
+  box.style.background = "white";
+  box.style.borderRadius = "12px";
+  box.style.display = "flex";
+  box.style.alignItems = "center";
+  box.style.justifyContent = "center";
+  box.style.boxShadow = "0 6px 16px rgba(0,0,0,0.3)";
 
   const inner = document.createElement("div");
   inner.style.width = "30px";
@@ -32,7 +50,9 @@ export default function Home() {
   inner.style.backgroundSize = "cover";
   inner.style.borderRadius = "8px";
 
-  el.appendChild(inner);
+  box.appendChild(inner);
+  el.appendChild(box);
+  el.appendChild(pointer);
 
   new mapboxgl.Marker(el)
     .setLngLat([13.405, 52.52])
