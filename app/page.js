@@ -188,9 +188,9 @@ const marker = new mapboxgl.Marker(pin)
 // 🟩:::::::::::::::::::::::::
 // 🟩 CLICK → POPUP
 // 🟩:::::::::::::::::::::::::
-pin.addEventListener("click", () => {
+  pin.addEventListener("click", () => {
 
-  const popupHTML = `
+    const popupHTML = `
     <div style="font-family: sans-serif; min-width:150px;">
       <b>${event.name}</b><br/>
       🎵 ${event.time || "Time unknown"}<br/><br/>
@@ -205,9 +205,11 @@ pin.addEventListener("click", () => {
     </div>
   `;
 
-  new mapboxgl.Popup({ offset: 25 })
-    .setLngLat([event.lng, event.lat])
-    .setHTML(popupHTML)
-    .addTo(map);
+    new mapboxgl.Popup({ offset: 25 })
+      .setLngLat([event.lng, event.lat])
+      .setHTML(popupHTML)
+      .addTo(map);
 
-}); // ✅ schließt click event
+  }); // ✅ click event
+
+} // ✅ FUNCTION schließen
