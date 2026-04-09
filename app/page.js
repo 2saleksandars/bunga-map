@@ -123,7 +123,15 @@ function createEventPin(map, event) {
   // 🟩:::::::::::::::::::::::::
   // 🟩 PIN DESIGN ✅ EDIT HERE
   // 🟩:::::::::::::::::::::::::
+  pin.style.cursor = "pointer";
   const pin = document.createElement("div");
+
+// 🟩 DESIGN 👉 HIER
+pin.style.width = "30px";
+pin.style.height = "30px";
+pin.style.borderRadius = "50%";
+pin.style.border = "3px solid white";
+pin.style.cursor = "pointer";
 
 // 🟩 HOVER LABEL (STABIL)
 pin.addEventListener("mouseenter", () => {
