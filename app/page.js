@@ -51,9 +51,9 @@ export default function Home() {
 
 ---
 
-# =========================
-# 🎬 FUNCTION: MAIN PIN
-# =========================
+// =========================
+// 🎬 FUNCTION: MAIN PIN
+// =========================
 function createMainPin(map) {
 
   const el = document.createElement("div");
@@ -100,9 +100,9 @@ function createMainPin(map) {
 
 ---
 
-# =========================
-# 🌐 FUNCTION: LOAD EVENTS
-# =========================
+// =========================
+// 🌐 FUNCTION: LOAD EVENTS
+// =========================
 function loadEvents(map) {
 
   fetch("/api/events")
@@ -120,9 +120,9 @@ function loadEvents(map) {
 
 ---
 
-# =========================
-# 📍 FUNCTION: EVENT PIN
-# =========================
+// =========================
+// 📍 FUNCTION: EVENT PIN
+// =========================
 function createEventPin(map, event) {
 
   const pin = document.createElement("div");
