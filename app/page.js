@@ -203,7 +203,7 @@ const marker = new mapboxgl.Marker(pin)
         🌐 Website
       </a>
     </div>
-  `;
+    `;
 
     new mapboxgl.Popup({ offset: 25 })
       .setLngLat([event.lng, event.lat])
