@@ -144,4 +144,33 @@ function createEventPin(map, event) {
   new mapboxgl.Marker(pin)
     .setLngLat([event.lng, event.lat])
     .addTo(map);
-}
+const marker = new mapboxgl.Marker(pin)
+  .setLngLat([event.lng, event.lat])
+  .addTo(map);
+
+// 🟩:::::::::::::::::::::::::
+// 🟩 CLICK → POPUP
+// 🟩:::::::::::::::::::::::::
+pin.addEventListener("click", () => {
+
+  const popupHTML = `
+    <div style="font-family: sans-serif; min-width:150px;">
+      <b>${event.name}</b><br/>
+      🎵 ${event.time || "Time unknown"}<br/><br/>
+
+      <a href="https://www.google.com/maps/dir/?api=1&destination=${event.lat},${event.lng}" target="_blank">
+        📍 Route
+      </a><br/>
+
+      <a href="${event.website || "#"}" target="_blank">
+        🌐 Website
+      </a>
+    </div>
+  `;
+
+  new mapboxgl.Popup({ offset: 25 })
+    .setLngLat([event.lng, event.lat])
+    .setHTML(popupHTML)
+    .addTo(map);
+
+});
