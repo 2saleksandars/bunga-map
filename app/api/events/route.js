@@ -121,6 +121,10 @@ export async function GET() {
       const html = await res.text();
       const text = html.toLowerCase();
 
+      // 🟧 DEBUG HIER 👇
+      console.log("PLACE:", place.name);
+      console.log("TEXT PREVIEW:", text.slice(0, 200));
+
       // 🟧 TEXT ANALYSIS ⚠️
       const isLive =
         text.includes("live") ||
@@ -128,10 +132,46 @@ export async function GET() {
         text.includes("concert") ||
         text.includes("music");
 
+      // 🟧────────────────────────
+      // 🟧 ZEIT ANALYSE
+      // 🟧────────────────────────
+
+      // 👉 aktuelle Zeit
+      const now = new Date();
+      const currentHour = now.getHours();
+
+      // 👉 einfache Zeit-Erkennung aus Text
+      let eventHour = null;
+
+      // Beispiele: "20:00", "8pm", "21h"
+      const timeMatch =
+        text.match(/(\d{1,2}):(\d{2})/) ||
+        text.match(/(\d{1,2})\s?(pm|am)/) ||
+        text.match(/(\d{1,2})h/);
+
+      if (timeMatch) {
+        eventHour = parseInt(timeMatch[1]);
+
+        // pm → +12
+        if (timeMatch[2] === "pm" && eventHour < 12) {
+          eventHour += 12;
+        }
+      }
+
+      // 👉 HEUTE check (wie vorher)
       const isToday =
         text.includes("today") ||
         text.includes("heute") ||
         text.includes("tonight");
+
+      // 👉 LIVE NOW (Zeitfenster ±2h)
+      let isLiveNow = false;
+
+      if (eventHour !== null) {
+        if (Math.abs(currentHour - eventHour) <= 2) {
+          isLiveNow = true;
+        }
+      }
 
       // 🟧 STATUS DECISION ⚠️
       if (isLive) {
@@ -139,7 +179,11 @@ export async function GET() {
           name: place.name,
           lat: place.lat,
           lng: place.lng,
-          status: isToday ? "LIVE TODAY" : "LIKELY LIVE"
+          status: isLiveNow
+            ? "LIVE NOW"
+            : isToday
+              ? "LIVE TODAY"
+              : "LIKELY LIVE"
         });
       }
 

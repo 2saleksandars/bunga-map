@@ -83,13 +83,7 @@ function createMainPin(map) {
   box.appendChild(inner);
   el.appendChild(box);
   el.appendChild(pointer);
-
-  // 🟥 MAP ADD ❌ CORE
-  new mapboxgl.Marker(el)
-    .setLngLat([13.405, 52.52])
-    .addTo(map);
 }
-
 // 🟥████████████████████████
 // 🟥 FUNCTION: LOAD EVENTS
 // 🟥████████████████████████
@@ -108,7 +102,14 @@ function loadEvents(map) {
       // 🟧 LOOP EVENTS ⚠️ LOGIK
       // 🟧────────────────────────
       events.forEach(event => {
+
+        const isLiveNow = event.status === "LIVE NOW";
+        const isToday = event.status === "LIVE TODAY";
+
+        if (!isLiveNow && !isToday) return;
+
         createEventPin(map, event);
+
       });
 
     });
@@ -124,26 +125,54 @@ function createEventPin(map, event) {
   // 🟩:::::::::::::::::::::::::
   const pin = document.createElement("div");
 
+// 🟩 HOVER LABEL (STABIL)
+pin.addEventListener("mouseenter", () => {
+
+  // ❌ verhindert doppelte Labels
+  if (pin.querySelector(".hover-label")) return;
+
+  const tooltip = document.createElement("div");
+
+  tooltip.innerText = event.name;
+  tooltip.style.position = "absolute";
+  tooltip.style.bottom = "40px";
+  tooltip.style.left = "50%";
+  tooltip.style.transform = "translateX(-50%)";
+  tooltip.style.background = "black";
+  tooltip.style.color = "white";
+  tooltip.style.padding = "4px 8px";
+  tooltip.style.borderRadius = "6px";
+  tooltip.style.fontSize = "12px";
+  tooltip.style.whiteSpace = "nowrap";
+
+  tooltip.className = "hover-label";
+
+  pin.appendChild(tooltip);
+});
+
+pin.addEventListener("mouseleave", () => {
+  const label = pin.querySelector(".hover-label");
+  if (label) label.remove();
+});
+
   pin.style.width = "30px";
   pin.style.height = "30px";
   pin.style.borderRadius = "50%";
   pin.style.border = "3px solid white";
 
   // 🟧 STATUS LOGIC ⚠️
-  if (event.status === "LIVE TODAY") {
+  if (event.status === "LIVE NOW") {
     pin.style.background = "red";
-  } else if (event.status === "LIKELY LIVE") {
+  } else if (event.status === "LIVE TODAY") {
     pin.style.background = "orange";
   } else {
-    pin.style.background = "gray";
+    return; // ❌ KEIN PIN
   }
 
   pin.style.boxShadow = "0 0 20px rgba(0,0,0,0.8)";
 
   // 🟥 MAP ADD ❌ NICHT ÄNDERN
-  new mapboxgl.Marker(pin)
-    .setLngLat([event.lng, event.lat])
-    .addTo(map);
+
 const marker = new mapboxgl.Marker(pin)
   .setLngLat([event.lng, event.lat])
   .addTo(map);
@@ -173,4 +202,4 @@ pin.addEventListener("click", () => {
     .setHTML(popupHTML)
     .addTo(map);
 
-});
+}); // ✅ schließt click event
