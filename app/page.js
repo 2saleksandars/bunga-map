@@ -205,10 +205,8 @@ const marker = new mapboxgl.Marker(pin)
     </div>
   `;
 
-    new mapboxgl.Popup({ offset: 25 })
-      .setLngLat([event.lng, event.lat])
-      .setHTML(popupHTML)
-      .addTo(map);
+    new mapboxgl.Popup(...)
+  });
 
   }); // ✅ click event
 
