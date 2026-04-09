@@ -191,9 +191,8 @@ const marker = new mapboxgl.Marker(pin)
   pin.addEventListener("click", () => {
 
     const popupHTML = `
-    <div>
-      <b>${event.name}</b>
-    </div>
+    <div style="font-family: sans-serif; min-width:150px;">
+      <b>${event.name}</b><br/><br/>
 
       <a href="https://www.google.com/maps/dir/?api=1&destination=${event.lat},${event.lng}" target="_blank">
         📍 Route
@@ -209,8 +208,7 @@ const marker = new mapboxgl.Marker(pin)
       .setLngLat([event.lng, event.lat])
       .setHTML(popupHTML)
       .addTo(map);
+
     
-
   }); // ✅ click event
-
-} // ✅ FUNCTION schließen
+} // ✅ function
