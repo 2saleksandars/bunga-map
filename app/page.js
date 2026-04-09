@@ -1,26 +1,26 @@
 "use client";
 
-// =========================
-// 📦 IMPORTS
-// =========================
+// 🟥████████████████████████
+// 🟥 IMPORTS
+// 🟥████████████████████████
 import { useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 
-// =========================
-// 🔐 CONFIG
-// =========================
+// 🟥████████████████████████
+// 🟥 CONFIG ❌ NICHT ÄNDERN
+// 🟥████████████████████████
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
-// =========================
-// 🧩 COMPONENT
-// =========================
+// 🟥████████████████████████
+// 🟥 MAIN COMPONENT
+// 🟥████████████████████████
 export default function Home() {
 
   useEffect(() => {
 
-    // =========================
-    // 🗺️ INIT MAP
-    // =========================
+    // 🟥████████████████████████
+    // 🟥 MAP INIT ❌ CORE SYSTEM
+    // 🟥████████████████████████
     const map = new mapboxgl.Map({
       container: "map",
       style: "mapbox://styles/mapbox/streets-v12",
@@ -34,83 +34,79 @@ export default function Home() {
       minZoom: 10
     });
 
-    // =========================
-    // ⏳ ON MAP LOAD
-    // =========================
+    // 🟧────────────────────────
+    // 🟧 MAP LOAD EVENT ⚠️ LOGIK
+    // 🟧────────────────────────
     map.on("load", () => {
 
+      // 🟩:::::::::::::::::::::::::
+      // 🟩 MAIN PIN (UI DESIGN)
+      // 🟩:::::::::::::::::::::::::
       createMainPin(map);
+
+      // 🟦~~~~~~~~~~~~~~~~~~~~~~~~~
+      // 🟦 LOAD DATA (API)
+      // 🟦~~~~~~~~~~~~~~~~~~~~~~~~~
       loadEvents(map);
 
     });
 
   }, []);
 
+  // 🟥 RENDER ❌ NICHT ÄNDERN
   return <div id="map" style={{ width: "100%", height: "100vh" }} />;
 }
 
-
-
-// =========================
-// 🎬 FUNCTION: MAIN PIN
-// =========================
+// 🟥████████████████████████
+// 🟥 FUNCTION: MAIN PIN
+// 🟥████████████████████████
 function createMainPin(map) {
 
+  // 🟩:::::::::::::::::::::::::
+  // 🟩 PIN CONTAINER (DESIGN)
+  // 🟩:::::::::::::::::::::::::
   const el = document.createElement("div");
   el.style.width = "40px";
   el.style.height = "50px";
   el.style.position = "relative";
 
+  // 🟩 POINTER
   const pointer = document.createElement("div");
-  pointer.style.width = "0";
-  pointer.style.height = "0";
-  pointer.style.borderLeft = "10px solid transparent";
-  pointer.style.borderRight = "10px solid transparent";
-  pointer.style.borderTop = "15px solid white";
-  pointer.style.position = "absolute";
-  pointer.style.bottom = "0";
-  pointer.style.left = "50%";
-  pointer.style.transform = "translateX(-50%)";
 
+  // 🟩 BOX
   const box = document.createElement("div");
-  box.style.width = "40px";
-  box.style.height = "40px";
-  box.style.background = "white";
-  box.style.borderRadius = "12px";
-  box.style.display = "flex";
-  box.style.alignItems = "center";
-  box.style.justifyContent = "center";
-  box.style.boxShadow = "0 6px 16px rgba(0,0,0,0.3)";
 
+  // 🟩 INNER GIF
   const inner = document.createElement("div");
-  inner.style.width = "30px";
-  inner.style.height = "30px";
-  inner.style.backgroundImage = "url('/gif.gif')";
-  inner.style.backgroundSize = "cover";
-  inner.style.borderRadius = "8px";
 
+  // 🟩 ASSEMBLY
   box.appendChild(inner);
   el.appendChild(box);
   el.appendChild(pointer);
 
+  // 🟥 MAP ADD ❌ CORE
   new mapboxgl.Marker(el)
     .setLngLat([13.405, 52.52])
     .addTo(map);
 }
 
-
-
-// =========================
-// 🌐 FUNCTION: LOAD EVENTS
-// =========================
+// 🟥████████████████████████
+// 🟥 FUNCTION: LOAD EVENTS
+// 🟥████████████████████████
 function loadEvents(map) {
 
+  // 🟦~~~~~~~~~~~~~~~~~~~~~~~~~
+  // 🟦 FETCH DATA
+  // 🟦~~~~~~~~~~~~~~~~~~~~~~~~~
   fetch("/api/events")
     .then(res => res.json())
     .then(events => {
 
       console.log("EVENTS:", events);
 
+      // 🟧────────────────────────
+      // 🟧 LOOP EVENTS ⚠️ LOGIK
+      // 🟧────────────────────────
       events.forEach(event => {
         createEventPin(map, event);
       });
@@ -118,13 +114,14 @@ function loadEvents(map) {
     });
 }
 
-
-
-// =========================
-// 📍 FUNCTION: EVENT PIN
-// =========================
+// 🟥████████████████████████
+// 🟥 FUNCTION: EVENT PIN
+// 🟥████████████████████████
 function createEventPin(map, event) {
 
+  // 🟩:::::::::::::::::::::::::
+  // 🟩 PIN DESIGN ✅ EDIT HERE
+  // 🟩:::::::::::::::::::::::::
   const pin = document.createElement("div");
 
   pin.style.width = "30px";
@@ -132,6 +129,7 @@ function createEventPin(map, event) {
   pin.style.borderRadius = "50%";
   pin.style.border = "3px solid white";
 
+  // 🟧 STATUS LOGIC ⚠️
   if (event.status === "LIVE TODAY") {
     pin.style.background = "red";
   } else if (event.status === "LIKELY LIVE") {
@@ -142,6 +140,7 @@ function createEventPin(map, event) {
 
   pin.style.boxShadow = "0 0 20px rgba(0,0,0,0.8)";
 
+  // 🟥 MAP ADD ❌ NICHT ÄNDERN
   new mapboxgl.Marker(pin)
     .setLngLat([event.lng, event.lat])
     .addTo(map);
