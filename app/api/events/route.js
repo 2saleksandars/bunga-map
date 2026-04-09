@@ -1,5 +1,11 @@
+// 🟥████████████████████████
+// 🟥 API ROUTE: EVENTS
+// 🟥████████████████████████
 export async function GET() {
 
+  // 🟦~~~~~~~~~~~~~~~~~~~~~~~~~
+  // 🟦 DATA SOURCE LIST
+  // 🟦~~~~~~~~~~~~~~~~~~~~~~~~~
   const sources = [
     {
       name: "The Hat Bar",
@@ -99,14 +105,23 @@ export async function GET() {
     }
   ];
 
+  // 🟦~~~~~~~~~~~~~~~~~~~~~~~~~
+  // 🟦 RESULTS ARRAY
+  // 🟦~~~~~~~~~~~~~~~~~~~~~~~~~
   const results = [];
 
+  // 🟧────────────────────────
+  // 🟧 LOOP SOURCES ⚠️ LOGIK
+  // 🟧────────────────────────
   for (const place of sources) {
     try {
+
+      // 🟦 FETCH WEBSITE
       const res = await fetch(place.url);
       const html = await res.text();
       const text = html.toLowerCase();
 
+      // 🟧 TEXT ANALYSIS ⚠️
       const isLive =
         text.includes("live") ||
         text.includes("jazz") ||
@@ -118,6 +133,7 @@ export async function GET() {
         text.includes("heute") ||
         text.includes("tonight");
 
+      // 🟧 STATUS DECISION ⚠️
       if (isLive) {
         results.push({
           name: place.name,
@@ -128,9 +144,12 @@ export async function GET() {
       }
 
     } catch (e) {
+
       console.log("Skipped:", place.name);
 
-      // 🔥 Fallback (immer anzeigen)
+      // 🟩:::::::::::::::::::::::::
+      // 🟩 FALLBACK (ALWAYS SHOW)
+      // 🟩:::::::::::::::::::::::::
       results.push({
         name: place.name,
         lat: place.lat,
@@ -140,5 +159,6 @@ export async function GET() {
     }
   }
 
+  // 🟥 RESPONSE ❌ NICHT ÄNDERN
   return Response.json(results);
 }
