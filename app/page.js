@@ -209,7 +209,7 @@ const marker = new mapboxgl.Marker(pin)
       .setLngLat([event.lng, event.lat])
       .setHTML(popupHTML)
       .addTo(map);
-  
+    
 
   }); // ✅ click event
 
