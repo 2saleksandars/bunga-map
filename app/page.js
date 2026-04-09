@@ -49,7 +49,7 @@ export default function Home() {
   return <div id="map" style={{ width: "100%", height: "100vh" }} />;
 }
 
----
+
 
 // =========================
 // 🎬 FUNCTION: MAIN PIN
@@ -98,7 +98,7 @@ function createMainPin(map) {
     .addTo(map);
 }
 
----
+
 
 // =========================
 // 🌐 FUNCTION: LOAD EVENTS
@@ -118,7 +118,7 @@ function loadEvents(map) {
     });
 }
 
----
+
 
 // =========================
 // 📍 FUNCTION: EVENT PIN
