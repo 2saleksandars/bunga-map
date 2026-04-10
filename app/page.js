@@ -119,54 +119,17 @@ function loadEvents(map) {
 // 🟥 FUNCTION: EVENT PIN
 // 🟥████████████████████████
 function createEventPin(map, event) {
-
   // 🟩:::::::::::::::::::::::::
-  // 🟩 PIN DESIGN ✅ EDIT HERE
+  // 🟩 PIN DESIGN ✅ DECLARE FIRST
   // 🟩:::::::::::::::::::::::::
-  pin.style.cursor = "pointer";
   const pin = document.createElement("div");
-
-// 🟩 DESIGN 👉 HIER
-pin.style.width = "30px";
-pin.style.height = "30px";
-pin.style.borderRadius = "50%";
-pin.style.border = "3px solid white";
-pin.style.cursor = "pointer";
-
-// 🟩 HOVER LABEL (STABIL)
-pin.addEventListener("mouseenter", () => {
-
-  // ❌ verhindert doppelte Labels
-  if (pin.querySelector(".hover-label")) return;
-
-  const tooltip = document.createElement("div");
-
-  tooltip.innerText = event.name;
-  tooltip.style.position = "absolute";
-  tooltip.style.bottom = "40px";
-  tooltip.style.left = "50%";
-  tooltip.style.transform = "translateX(-50%)";
-  tooltip.style.background = "black";
-  tooltip.style.color = "white";
-  tooltip.style.padding = "4px 8px";
-  tooltip.style.borderRadius = "6px";
-  tooltip.style.fontSize = "12px";
-  tooltip.style.whiteSpace = "nowrap";
-
-  tooltip.className = "hover-label";
-
-  pin.appendChild(tooltip);
-});
-
-pin.addEventListener("mouseleave", () => {
-  const label = pin.querySelector(".hover-label");
-  if (label) label.remove();
-});
-
+  pin.style.cursor = "pointer";
   pin.style.width = "30px";
   pin.style.height = "30px";
   pin.style.borderRadius = "50%";
   pin.style.border = "3px solid white";
+  pin.style.boxShadow = "0 0 20px rgba(0,0,0,0.8)";
+  pin.style.position = "relative"; // Vital for tooltip positioning
 
   // 🟧 STATUS LOGIC ⚠️
   if (event.status === "LIVE NOW") {
@@ -174,31 +137,61 @@ pin.addEventListener("mouseleave", () => {
   } else if (event.status === "LIVE TODAY") {
     pin.style.background = "orange";
   } else {
-    return; // ❌ KEIN PIN
+    return; // ❌ EXIT IF NEITHER
   }
 
-  pin.style.boxShadow = "0 0 20px rgba(0,0,0,0.8)";
+  // 🟩 HOVER LABEL (STABIL)
+  pin.addEventListener("mouseenter", () => {
+    if (pin.querySelector(".hover-label")) return;
+
+    const tooltip = document.createElement("div");
+    tooltip.innerText = event.name;
+    tooltip.className = "hover-label";
+    
+    // Styling the tooltip
+    Object.assign(tooltip.style, {
+      position: "absolute",
+      bottom: "40px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      background: "black",
+      color: "white",
+      padding: "4px 8px",
+      borderRadius: "6px",
+      fontSize: "12px",
+      whiteSpace: "nowrap",
+      pointerEvents: "none", // Prevents flickering
+      zIndex: "10"
+    });
+
+    pin.appendChild(tooltip);
+  });
+
+  pin.addEventListener("mouseleave", () => {
+    const label = pin.querySelector(".hover-label");
+    if (label) label.remove();
+  });
 
   // 🟥 MAP ADD ❌ NICHT ÄNDERN
+  new mapboxgl.Marker(pin)
+    .setLngLat([event.lng, event.lat])
+    .addTo(map);
 
-const marker = new mapboxgl.Marker(pin)
-  .setLngLat([event.lng, event.lat])
-  .addTo(map);
-
-// 🟩:::::::::::::::::::::::::
-// 🟩 CLICK → POPUP
-// 🟩:::::::::::::::::::::::::
-  pin.addEventListener("click", () => {
+  // 🟩:::::::::::::::::::::::::
+  // 🟩 CLICK → POPUP
+  // 🟩:::::::::::::::::::::::::
+  pin.addEventListener("click", (e) => {
+    e.stopPropagation(); // Prevents map click events
 
     const popupHTML = `
-    <div style="font-family: sans-serif; min-width:150px;">
-      <b>${event.name}</b><br/><br/>
-
-      <a href="https://www.google.com/maps/dir/?api=1&destination=${event.lat},${event.lng}" target="_blank">
+    <div style="font-family: sans-serif; min-width:150px; color: black; padding: 5px;">
+      <b style="font-size: 14px;">${event.name}</b><br/><br/>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=${event.lat},${event.lng}" 
+         target="_blank" style="text-decoration: none; color: #007aff;">
         📍 Route
-      </a><br/>
-
-      <a href="${event.website || "#"}" target="_blank">
+      </a><br/><br/>
+      <a href="${event.website || "#"}" 
+         target="_blank" style="text-decoration: none; color: #007aff;">
         🌐 Website
       </a>
     </div>
@@ -208,7 +201,5 @@ const marker = new mapboxgl.Marker(pin)
       .setLngLat([event.lng, event.lat])
       .setHTML(popupHTML)
       .addTo(map);
-
-    
-  }); // ✅ click event
-} // ✅ function
+  });
+}
