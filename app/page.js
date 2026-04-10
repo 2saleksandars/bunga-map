@@ -101,6 +101,7 @@ function loadEvents(map) {
       // 🟧────────────────────────
       // 🟧 LOOP EVENTS ⚠️ LOGIK
       // 🟧────────────────────────
+      console.log("SOURCE EVENT:", event);
       events.forEach(event => {
 
         const isLiveNow = event.status === "LIVE NOW";
